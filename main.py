@@ -1,6 +1,7 @@
 import json
 import os
 import webbrowser
+import logging
 
 import requests
 import schedule
@@ -10,6 +11,10 @@ from spotifier import Spotify
 from spotifier.oauth import SpotifyAuthorizationCode
 
 INTERVAL = 3  # minutes
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 class Slack:
@@ -34,9 +39,13 @@ def job(slack: Slack, spotify: Spotify):
     if track is not None:
         name = track["item"]["name"]
         artists = track["item"]["artists"]
-        slack.set_status(text=f"{name} by {', '.join([artist['name'] for artist in artists])}")
+        text = f"{name} by {', '.join([artist['name'] for artist in artists])}"
+        slack.set_status(text=text)
     else:
+        text = ""
         slack.set_status(text="")
+
+    logger.info(text)
 
 
 def main():
