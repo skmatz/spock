@@ -1,11 +1,13 @@
+import argparse
 import json
-import os
-import webbrowser
 import logging
+import os
+import time
+import webbrowser
+from typing import Optional
 
 import requests
 import schedule
-
 import spotifier.scopes as S
 from spotifier import Spotify
 from spotifier.oauth import SpotifyAuthorizationCode
@@ -33,7 +35,7 @@ class Slack:
         _ = requests.post(self.USERS_PROFILE_SET_ENDPOINT, data=payload)
 
 
-def job(slack: Slack, spotify: Spotify):
+def job(slack: Slack, spotify: Spotify) -> Optional[int]:
     track = spotify.get_the_users_currently_playing_track(market="from_token")
 
     if track is not None:
@@ -47,8 +49,12 @@ def job(slack: Slack, spotify: Spotify):
 
     logger.info(text)
 
+    if track is not None:
+        return int((track["item"]["duration_ms"] - track["progress_ms"]) / 1000)
+    return None
 
-def main():
+
+def main(continuous: bool):
     oauth = SpotifyAuthorizationCode(
         client_id=os.environ["SPOTIFY_CLIENT_ID"],
         client_secret=os.environ["SPOTIFY_CLIENT_SECRET"],
@@ -65,11 +71,22 @@ def main():
     slack = Slack(os.environ["SLACK_ACCESS_TOKEN"], emoji=":spotify:")
     spotify = Spotify(oauth, auto_refresh=True)
 
-    schedule.every(INTERVAL).minutes.do(job, slack, spotify)
-
-    while True:
-        schedule.run_pending()
+    if continuous:
+        while True:
+            remaining = job(slack, spotify)
+            if remaining is None:
+                time.sleep(INTERVAL)  # if not playing, next update is INTERVAL sec after
+            else:
+                time.sleep(remaining + 1)  # add extra 1 sec
+    else:
+        schedule.every(INTERVAL).minutes.do(job, slack, spotify)
+        while True:
+            schedule.run_pending()
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--continuous", action="store_true", help="Set next update schedule dynamically")
+    args = parser.parse_args()
+
+    main(args.continuous)
