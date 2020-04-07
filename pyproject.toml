@@ -8,8 +8,8 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.23.0"
+spotifier = "^0.1.0"
 schedule = "^0.6.0"
-spotifier = {git = "https://github.com/skmatz/spotifier.git"}
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"

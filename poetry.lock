@@ -295,20 +295,16 @@ version = "1.14.0"
 
 [[package]]
 category = "main"
-description = ""
+description = "A Spotify Web API Library for Modern Python"
 name = "spotifier"
 optional = false
-python-versions = "^3.6"
+python-versions = ">=3.6,<4.0"
 version = "0.1.0"
 
 [package.dependencies]
-mypy_extensions = "^0.4.3"
-requests = "^2.23.0"
+mypy_extensions = ">=0.4.3,<0.5.0"
+requests = ">=2.23.0,<3.0.0"
 
-[package.source]
-reference = "2d7a41e4e289614992cc252a4db1e30b7d87b267"
-type = "git"
-url = "https://github.com/skmatz/spotifier.git"
 [[package]]
 category = "dev"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -355,7 +351,7 @@ python-versions = "*"
 version = "0.1.9"
 
 [metadata]
-content-hash = "c77556de04c0b9b49115662f6422b54b2eee2a1355f60a1c5f6d127392da7bee"
+content-hash = "ea9bd770e025fd8628a4f72b2573eb9940e503497c289b63e03f8565e42a1896"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -502,7 +498,10 @@ six = [
     {file = "six-1.14.0-py2.py3-none-any.whl", hash = "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"},
     {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
 ]
-spotifier = []
+spotifier = [
+    {file = "spotifier-0.1.0-py3-none-any.whl", hash = "sha256:087626887d386980681d8bae3718c05c59ababa5763a695ee7f19f30c2a8d7f5"},
+    {file = "spotifier-0.1.0.tar.gz", hash = "sha256:3533ff36ac7b6a242948ca70f157bc4ebc2ef989619ba0fd2390f7d77b1aa6e1"},
+]
 toml = [
     {file = "toml-0.10.0-py2.7.egg", hash = "sha256:f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"},
     {file = "toml-0.10.0-py2.py3-none-any.whl", hash = "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"},
