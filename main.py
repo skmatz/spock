@@ -75,7 +75,7 @@ def main(continuous: bool):
         while True:
             remaining = job(slack, spotify)
             if remaining is None:
-                time.sleep(INTERVAL)  # if not playing, next update is INTERVAL sec after
+                time.sleep(INTERVAL * 60)  # if not playing, next update is INTERVAL sec after
             else:
                 time.sleep(remaining + 1)  # add extra 1 sec
     else:
