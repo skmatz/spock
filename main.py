@@ -14,8 +14,13 @@ from spotifier.oauth import SpotifyAuthorizationCode
 
 INTERVAL = 3  # minutes
 
-logging.basicConfig()
 logger = logging.getLogger(__name__)
+handler = logging.StreamHandler()
+formatter = logging.Formatter(
+    fmt="[%(asctime)s] %(levelname)s [%(filename)s %(funcName)s]: %(message)s", datefmt="%y/%m/%d %H:%M:%S"
+)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 
