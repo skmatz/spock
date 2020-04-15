@@ -46,6 +46,7 @@ def job(slack: Slack, spotify: Spotify) -> Optional[int]:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--continuous", action="store_true", help="Set next update schedule dynamically")
+    parser.add_argument("-e", "--emoji", default=":musical_note:", help="Emoji for Slack status")
     args = parser.parse_args()
 
     oauth = SpotifyAuthorizationCode(
@@ -61,7 +62,7 @@ def main():
     code = oauth.parse_response_code(url)
     oauth.set_token(code)
 
-    slack = Slack(os.environ["SLACK_ACCESS_TOKEN"], emoji=":spotify:")
+    slack = Slack(os.environ["SLACK_ACCESS_TOKEN"], emoji=args.emoji)
     spotify = Spotify(oauth, auto_refresh=True)
 
     if args.continuous:
