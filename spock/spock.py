@@ -12,8 +12,6 @@ from spotifier.oauth import SpotifyAuthorizationCode
 
 from .slack import Slack
 
-INTERVAL = 3  # minutes
-
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter(
@@ -47,6 +45,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--continuous", action="store_true", help="Set next update schedule dynamically")
     parser.add_argument("-e", "--emoji", default=":musical_note:", help="Emoji for Slack status")
+    parser.add_argument("-i", "--interval", default=3, type=int, help="Interval (min) to hit API in the normal mode")
     args = parser.parse_args()
 
     oauth = SpotifyAuthorizationCode(
@@ -69,10 +68,10 @@ def main():
         while True:
             remaining = job(slack, spotify)
             if remaining is None:
-                time.sleep(INTERVAL * 60)  # if not playing, next update is INTERVAL sec after
+                time.sleep(args.interval * 60)  # if not playing, next update is args.interval sec after
             else:
                 time.sleep(remaining + 1)  # add extra 1 sec
     else:
-        schedule.every(INTERVAL).minutes.do(job, slack, spotify)
+        schedule.every(args.interval).minutes.do(job, slack, spotify)
         while True:
             schedule.run_pending()
