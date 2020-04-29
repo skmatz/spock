@@ -10,6 +10,7 @@ import spotifier.scopes as S
 from spotifier import Spotify
 from spotifier.oauth import SpotifyAuthorizationCode
 
+from . import __version__
 from .slack import Slack
 
 logger = logging.getLogger(__name__)
@@ -46,7 +47,12 @@ def main():
     parser.add_argument("-c", "--continuous", action="store_true", help="Set next update schedule dynamically")
     parser.add_argument("-e", "--emoji", default=":musical_note:", help="Emoji for Slack status")
     parser.add_argument("-i", "--interval", default=3, type=int, help="Interval (min) to hit API in the normal mode")
+    parser.add_argument("-v", "--version", action="store_true", help="Show version")
     args = parser.parse_args()
+
+    if args.version:
+        print("Spock v{}".format(__version__))
+        return
 
     oauth = SpotifyAuthorizationCode(
         client_id=os.environ["SPOTIFY_CLIENT_ID"],
