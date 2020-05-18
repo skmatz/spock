@@ -1,5 +1,7 @@
 # Spock
 
+[![build](https://github.com/skmatz/spock/workflows/build/badge.svg)](https://github.com/skmatz/spock/actions?query=workflow%3Abuild)
+
 :notes: Sync the music playing on Spotify with your Slack status
 
 ## Usage
