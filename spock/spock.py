@@ -27,7 +27,13 @@ def job(slack: Slack, spotify: Spotify) -> Optional[int]:
     track = spotify.get_the_users_currently_playing_track(market="from_token")
 
     if track is not None and track["is_playing"]:
-        name = track["item"]["name"]
+        item = track["item"]
+        name = item.get("name")
+        # handle exceptions such as podcasts
+        if name is None:
+            text = ""
+            slack.set_status(text="")
+
         artists = track["item"]["artists"]
         text = f"{name} by {', '.join([artist['name'] for artist in artists])}"
         slack.set_status(text=text)
