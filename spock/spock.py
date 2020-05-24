@@ -31,7 +31,7 @@ def job(slack: Slack, spotify: Spotify) -> Optional[int]:
         # handle exceptions such as podcasts
         if item is None:
             text = ""
-            slack.set_status(text="")
+            slack.set_status(text=text)
         else:
             name = item.get("name")
             artists = track["item"]["artists"]
@@ -39,7 +39,7 @@ def job(slack: Slack, spotify: Spotify) -> Optional[int]:
             slack.set_status(text=text)
     else:
         text = ""
-        slack.set_status(text="")
+        slack.set_status(text=text)
 
     logger.info(text)
 
